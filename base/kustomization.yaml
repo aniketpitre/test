@@ -1,4 +1,3 @@
 resources:
   - postgres.yaml
-  - kafka.yaml
   - app-deployment.yaml
