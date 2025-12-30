@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kali-gui
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kali-gui
+  template:
+    metadata:
+      labels:
+        app: kali-gui
+    spec:
+      containers:
+      - name: kali-gui
+        image: kalilinux/kali-rolling
+        command: ["/bin/bash", "-c", "apt update && apt install -y xfce4 xfce4-goodies x11vnc xvfb novnc websockify supervisor && /usr/bin/supervisord -n"]
+        ports:
+        - containerPort: 6080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kali-gui-service
+spec:
+  selector:
+    app: kali-gui
+  ports:
+    - port: 6080
+      targetPort: 6080
+  type: LoadBalancer
