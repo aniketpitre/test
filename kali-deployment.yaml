@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: kali-gui
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: kali-gui
@@ -15,9 +15,16 @@ spec:
       containers:
       - name: kali-gui
         image: kalilinux/kali-rolling
-        command: ["/bin/bash", "-c", "apt update && apt install -y xfce4 xfce4-goodies x11vnc xvfb novnc websockify supervisor && /usr/bin/supervisord -n"]
+        command: ["/bin/bash", "-c", "apt update && apt install -y xfce4-core x11vnc xvfb novnc supervisor && /usr/bin/supervisord -n"]
         ports:
         - containerPort: 6080
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
