@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kali-gui
+  name: ubuntu-gui
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: kali-gui
+      app: ubuntu-gui
   template:
     metadata:
       labels:
-        app: kali-gui
+        app: ubuntu-gui
     spec:
       containers:
-      - name: kali-gui
-        image: kalilinux/kali-rolling
-        command: ["/bin/bash", "-c", "apt update && apt install -y xfce4-core x11vnc xvfb novnc supervisor && /usr/bin/supervisord -n"]
+      - name: ubuntu-gui
+        image: dorowu/ubuntu-desktop-lxde-vnc
         ports:
         - containerPort: 6080
         resources:
@@ -29,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kali-gui-service
+  name: ubuntu-gui-service
 spec:
   selector:
-    app: kali-gui
+    app: ubuntu-gui
   ports:
     - port: 6080
       targetPort: 6080
