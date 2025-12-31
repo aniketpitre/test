@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: scylla
+  namespace: graph
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  serviceName: scylla
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scylla
+  template:
+    metadata:
+      labels:
+        app: scylla
+    spec:
+      containers:
+        - name: scylla
+          image: scylladb/scylla:5.2
+          args:
+            - --smp
+            - "1"
+            - --memory
+            - 750M
+            - --overprovisioned
+            - "1"
+          ports:
+            - containerPort: 9042
+              name: cql

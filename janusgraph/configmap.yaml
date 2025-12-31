@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: janusgraph-config
+  namespace: graph
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+data:
+  janusgraph.properties: |
+    storage.backend=cql
+    storage.hostname=scylla
+    storage.cql.keyspace=janusgraph
+    index.search.backend=none

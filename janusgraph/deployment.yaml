@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: janusgraph
+  namespace: graph
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: janusgraph
+  template:
+    metadata:
+      labels:
+        app: janusgraph
+    spec:
+      containers:
+        - name: janusgraph
+          image: janusgraph/janusgraph:1.0.0
+          ports:
+            - containerPort: 8182
+          env:
+            - name: JANUS_PROPS
+              value: /etc/janusgraph/janusgraph.properties
+          volumeMounts:
+            - name: config
+              mountPath: /etc/janusgraph
+      volumes:
+        - name: config
+          configMap:
+            name: janusgraph-config
