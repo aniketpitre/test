@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keydb-sentinel
+  namespace: default  # Specify the namespace here
 spec:
   replicas: 3
   selector:
@@ -21,7 +22,7 @@ spec:
           - "exec /usr/local/bin/keydb-sentinel /etc/keydb/sentinel.conf"
         env:
         - name: SENTINEL_QUORUM
-          value: "2"  # Minimum number of Sentinels required to confirm failover
+          value: "2"  # Quorum for failover (minimum number of Sentinels to decide failover)
         volumeMounts:
         - name: keydb-data
           mountPath: /etc/keydb

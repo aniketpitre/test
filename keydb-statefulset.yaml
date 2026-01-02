@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: keydb
+  namespace: default  # Specify the namespace here
 spec:
   serviceName: "keydb"
   replicas: 3
