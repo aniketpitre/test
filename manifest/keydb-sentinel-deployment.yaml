@@ -25,8 +25,8 @@ spec:
               value: "2"
           volumeMounts:
             - name: keydb-data
-              mountPath: /etc/keydb
-  volumes:
-    - name: keydb-data
-      configMap:
-        name: keydb-sentinel-config
+              mountPath: /etc/keydb   # Make sure the volume is correctly mounted here
+      volumes:
+        - name: keydb-data
+          configMap:
+            name: keydb-sentinel-config  # Reference the ConfigMap here
