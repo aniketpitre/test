@@ -2,12 +2,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: keydb-sentinel-config
-  namespace: default  # Specify the namespace here
+  namespace: default
 data:
   sentinel.conf: |
-    # Sentinel Configuration for KeyDB Cluster
+    # Sentinel Configuration for KeyDB
     sentinel monitor mymaster keydb-0.keydb.default.svc.cluster.local 6379 2
     sentinel down-after-milliseconds mymaster 5000
     sentinel failover-timeout mymaster 10000
     sentinel parallel-syncs mymaster 1
-    sentinel auth-pass mymaster "yourpasswordhere"  # Optional, set if using authentication
