@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keydb-sentinel
-  namespace: default  # Specify the namespace here
+  namespace: default
 spec:
   replicas: 3
   selector:
@@ -14,19 +14,19 @@ spec:
         app: keydb-sentinel
     spec:
       containers:
-      - name: keydb-sentinel
-        image: eqalpha/keydb:latest
-        command:
-          - "/bin/sh"
-          - "-c"
-          - "exec /usr/local/bin/keydb-sentinel /etc/keydb/sentinel.conf"
-        env:
-        - name: SENTINEL_QUORUM
-          value: "2"  # Quorum for failover (minimum number of Sentinels to decide failover)
-        volumeMounts:
-        - name: keydb-data
-          mountPath: /etc/keydb
+        - name: keydb-sentinel
+          image: eqalpha/keydb:latest
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "exec /usr/local/bin/keydb-sentinel /etc/keydb/sentinel.conf"
+          env:
+            - name: SENTINEL_QUORUM
+              value: "2"
+          volumeMounts:
+            - name: keydb-data
+              mountPath: /etc/keydb
   volumes:
-  - name: keydb-data
-    configMap:
-      name: keydb-sentinel-config
+    - name: keydb-data
+      configMap:
+        name: keydb-sentinel-config
