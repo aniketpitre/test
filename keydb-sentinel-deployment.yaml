@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keydb-sentinel
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: keydb-sentinel
+  template:
+    metadata:
+      labels:
+        app: keydb-sentinel
+    spec:
+      containers:
+      - name: keydb-sentinel
+        image: eqalpha/keydb:latest
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "exec /usr/local/bin/keydb-sentinel /etc/keydb/sentinel.conf"
+        env:
+        - name: SENTINEL_QUORUM
+          value: "2"  # Minimum number of Sentinels required to confirm failover
+        volumeMounts:
+        - name: keydb-data
+          mountPath: /etc/keydb
+  volumes:
+  - name: keydb-data
+    configMap:
+      name: keydb-sentinel-config

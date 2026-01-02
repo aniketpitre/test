@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keydb
+spec:
+  serviceName: "keydb"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: keydb
+  template:
+    metadata:
+      labels:
+        app: keydb
+    spec:
+      containers:
+      - name: keydb
+        image: eqalpha/keydb:latest
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: keydb-data
+          mountPath: /data
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "exec /usr/local/bin/keydb-server /etc/keydb/keydb.conf"
+  volumeClaimTemplates:
+  - metadata:
+      name: keydb-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
